@@ -48,7 +48,7 @@ widget's dropdowns).
 ### Usage example
 
 ```php
-<?= chervand\nav\widgets\Nav::widget([
+<?= chervand\bootstrap\Nav::widget([
     'toggle' => 'collapse',
     'items' => [
         [
