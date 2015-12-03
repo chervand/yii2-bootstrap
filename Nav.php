@@ -83,13 +83,10 @@ class Nav extends \yii\bootstrap\Nav
 
     protected static function prepareUrl($url)
     {
-        if (!is_string($url)) {
-            return null;
-        }
-        if (substr($url, 0, 1) === '#') {
+        if (is_array($url) || (is_string($url) && substr($url, 0, 1) === '#')) {
             return $url;
         }
-        return [$url];
+        return is_string($url) ? [$url] : null;
     }
 
     /**
