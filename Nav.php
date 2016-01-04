@@ -1,11 +1,7 @@
 <?php
-/**
- *
- */
 
 namespace chervand\bootstrap;
 
-use chervand\nav\models\Item;
 use yii\base\InvalidConfigException;
 use yii\bootstrap\BootstrapPluginAsset;
 use yii\bootstrap\Html;
@@ -43,27 +39,12 @@ class Nav extends \yii\bootstrap\Nav
     }
 
     /**
-     * object performance
      * @param $item
      * @return array|null
      */
     protected static function prepareItem($item)
     {
-        if ($item instanceof Item) {
-            return ArrayHelper::toArray($item, [
-                'chervand\nav\models\Item' => [
-                    'label',
-                    'name',
-                    'description',
-                    'url' => function ($item) {
-                        return static::prepareUrl($item->url);
-                    },
-                    'items' => function ($item) {
-                        return !empty($item->childItems) ? $item->childItems : null;
-                    },
-                ]
-            ]);
-        } elseif (is_array($item)) {
+        if (is_array($item)) {
             if (!isset($item['label'])) {
                 $item['label'] = '';
             }
