@@ -77,16 +77,21 @@ class Panel extends Widget
      * @return array
      * @throws InvalidConfigException
      */
-    public function prepareSection($name, $section)
+    public function prepareSection($name, &$section)
     {
         if (is_string($section)) {
-            $content = $section;
-            $section = [];
-            $section['content'] = $content;
-        } elseif (is_array($section)) {
-            if (isset($section['view'])) {
+            $section = ['content' => $section];
+        } elseif (is_callable($section)) {
+            $section = ['view' => $section];
+        }
+
+        if (is_array($section) && isset($section['view'])) {
+            if (is_string($section['view'])) {
                 $params = ArrayHelper::getValue($section, 'params', []);
-                $section['content'] = $this->render($section['view'], $params);
+                $section['content'] = $this->getView()
+                    ->render($section['view'], $params);
+            } elseif (is_callable($section['view'])) {
+                $section['content'] = call_user_func($section['view'], $this);
             }
         }
 

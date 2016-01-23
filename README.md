@@ -19,13 +19,33 @@ Bootstrap 3 Panel Widget
 <?= Panel::widget([
     'options' => ['class' => 'panel-primary'],
     'heading' => 'Heading', // string
-    'body' => [ // view
+    'body' => [ // view file
         'view' => '@app/views/site/about',
         'params' => ['model' => $model],
     ],
     'footer' => [ // string with options
         'options' => ['class' => 'clearfix'],
         'content' => \yii\bootstrap\Html::button('Button', ['class' => ' btn btn-primary pull-right'])
+    ]
+]) ?>
+```
+
+```php
+<?= Panel::widget([
+    'options' => ['class' => 'panel-primary'],
+    'heading' => function () { // closure
+            return 'Heading';
+        },
+    'body' => [ // partial view
+        'view' => '_body',
+        'params' => ['model' => $model],
+    ],
+    'footer' => [ // closure with options
+        'options' => ['class' => 'clearfix'],
+        'content' => 'overridden by view',
+        'view' => function () {
+                return \yii\bootstrap\Html::button('Button', ['class' => ' btn btn-primary pull-right']);
+            }
     ]
 ]) ?>
 ```
