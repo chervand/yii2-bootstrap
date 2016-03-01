@@ -3,9 +3,11 @@
 namespace chervand\bootstrap;
 
 use yii\base\InvalidConfigException;
+use yii\base\InvalidParamException;
 use yii\bootstrap\BootstrapPluginAsset;
 use yii\bootstrap\Html;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 
 /**
  * Class Nav
@@ -48,6 +50,13 @@ class Nav extends \yii\bootstrap\Nav
             if (!isset($item['label'])) {
                 $item['label'] = '';
             }
+            if (isset($item['options']) && is_string($item['options'])) {
+                try {
+                    $item['options'] = Json::decode($item['options']);
+                } catch (InvalidParamException $e) {
+                    unset($item['options']);
+                }
+            }
             if (isset($item['url'])) {
                 $item['url'] = static::prepareUrl($item['url']);
             }
@@ -66,8 +75,14 @@ class Nav extends \yii\bootstrap\Nav
     {
         if (is_array($url) || (is_string($url) && substr($url, 0, 1) === '#')) {
             return $url;
+        } elseif (is_string($url)) {
+            try {
+                return Json::decode($url);
+            } catch (InvalidParamException $e) {
+                return [$url];
+            }
         }
-        return is_string($url) ? [$url] : null;
+        return null;
     }
 
     /**
@@ -133,7 +148,7 @@ class Nav extends \yii\bootstrap\Nav
         if (isset($this->options['class'])) {
             $class .= ' ' . $this->options['class'];
         }
-        return \yii\bootstrap\Nav::widget([
+        return static::widget([
             'options' => ['id' => $id, 'class' => $class],
             'encodeLabels' => $this->encodeLabels,
             'items' => $items
