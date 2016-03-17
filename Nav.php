@@ -5,7 +5,6 @@ namespace chervand\bootstrap;
 use yii\base\InvalidConfigException;
 use yii\base\InvalidParamException;
 use yii\bootstrap\BootstrapPluginAsset;
-use yii\bootstrap\Html;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 
