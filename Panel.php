@@ -6,7 +6,6 @@
 namespace chervand\bootstrap;
 
 use yii\base\InvalidConfigException;
-use yii\bootstrap\Html;
 use yii\bootstrap\Widget;
 use yii\helpers\ArrayHelper;
 
