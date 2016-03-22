@@ -37,11 +37,18 @@
             var $dropdown = e.data.$dropdown;
             var options = $dropdown.data('ajaxDropdown').options;
             var ajaxOptions = $.extend(options.ajaxOptions, {data: $item.data()});
-            if (options.confirm === undefined || confirm(options.confirm)) {
-                $.ajax(ajaxOptions);
+            if (
+                options.confirm === undefined
+                || (typeof options.confirm == 'string' && confirm(options.confirm))
+                || (options.confirm instanceof Function && (methods.confirm = options.confirm))
+            ) {
+                methods.confirm.call(this, ajaxOptions);
             }
             e.preventDefault();
             return true;
+        },
+        confirm: function (options) {
+            $.ajax(options);
         }
     };
 })(window.jQuery);
